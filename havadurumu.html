@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title> İp Bazlı Hava Durumu - YK Yazılım</title>
+</head>
+<body>
+<style type="text/css">
+	 .havadurumu  p  {margin:0 } .text-gray-700{color:#4a5568} .bg-yellow-400 {background-color:#f6e05e } .shadow{box-shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px 0 rgba(0,0,0,.06)} .font-medium {font-weight: 500; } .flex {display:flex } .justify-around {justify-content:space-around } .justify-center {justify-content:center } .max-w-md {max-width:28rem } .text-center {text-align:center } .font-bold {font-weight: 700; } .items-center {align-items:center } .py-4 {padding-top:1rem; padding-bottom:1rem } .py-3 {padding-top:.75rem; padding-bottom:.75rem } .px-2 {padding-left:.5rem; padding-right:.5rem } .mt-5 {margin-top:1.25rem } .text-lg {font-size:1.125rem } .text-2xl {font-size:1.5rem } .text-5xl {font-size:3rem } .mx-auto {margin-left:auto; margin-right:auto }.max-w-sm {max-width: 24rem; } a{font-size: 20px; font-weight: bold; color: black; font-style: oblique; font-family: Arial, Helvetica, sans-serif; text-decoration: none; vertical-align: baseline; } a:hover{font-weight: bold; color: maroon; font-style: oblique; font-family: Arial, Helvetica, sans-serif; text-decoration: none; vertical-align: baseline; } } </style>
+<br>
+<h1 style="text-align: center;">İp Bazlı Hava Durumu Uygulaması</h1>
+<hr>
+<br>
+<div class="otg otg-items-3 otg-h-30 otg-v-30">
+	<div class="otg-item" style="margin-top: -20px">
+		<main class="havadurumu mv-autoedit font-sans max-w-md mx-auto">
+		<article class="max-w-sm mx-auto mt-5 bg-white rounded shadow">
+		<section class="px-2 py-4 text-center bg-yellow-400 text-gray-800">
+		<p class="text-2xl font-medium hava-il">
+		</p>
+		</section>
+		<section class="flex items-center justify-center hava-ikon">
+		<img src="" alt="Hava Durumu" title="Hava">
+		<p class="font-bold text-5xl ml-1 hava-derece">
+			<span property="units" mv-edit="#units" class="border-b-4 border-yellow-400"></span>
+		</p>
+		</section>
+		<p class="text-sm text-center text-gray-600 hava-tarih">
+			<date>
+		</p>
+		<section class="mt-5 py-3 px-2 flex justify-around text-gray-700 bg-yellow-400">
+		<p class="wind flex items-center hava-hiz">
+			 Yükleniyor...
+		</p>
+		<p class="humidity flex items-center hava-nem">
+		</p>
+		</section>
+		</article>
+		</main>
+	</div>
+	<br>
+<hr>
+<p style="text-align: center;"><a href="https://yusufkarakaya.com.tr">- Y.Karakaya -</a></p>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script type="text/javascript">
+	sehir();
+ 
+
+	function sehir(){
+		$.ajax({
+			url: "https://extreme-ip-lookup.com/json/",
+			jsonpCallback: "callback",
+			dataType: "jsonp",
+			success: function( location ) {
+				sehir=location.city;
+
+				hava(sehir); } }); }
+
+	function hava(city){
+			 
+				var api = "c050a3443ba9182498e549250a8ed089";
+				$.ajax({
+					url:'https://api.openweathermap.org/data/2.5/weather',
+					dataType:'json',
+					type:'GET',
+					data:{q:city,appid: api,units:'metric'},
+					success: function(data){
+						var wf='';
+						$.each(data.weather,function(index,val){
+							$(".wrapper nav li a").eq(0).html(city+": "+Math.round(data.main.temp)+"&deg;C");
+							$(".hava-il").html(city+","+data.sys.country);
+							$(".hava-nem").html(data.main.humidity+"%");
+							$(".hava-hiz").html(data.wind.speed);
+							
+							$(".hava-ikon img").attr("src","havaikon/"+val.icon+".png");
+							$(".hava-derece").html(Math.round(data.main.temp)+"&deg;C");
+
+						  
+
+						});
+
+
+
+					} });  
+			 
+ 
+
+				}
+				 
+</script> 
+</body>
+</html>
